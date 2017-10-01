@@ -19,9 +19,8 @@ He demonstrated it using JavaScript and the target phrase was "To be or not to b
 
 # Some Global Variables
 population = 1000
-target = raw_input("Enter target DNA: ")
+target = raw_input("Enter Target DNA: ")
 recordFitness = 0
-maxFitness = len(target)
 species = []
 nextGen = []
 selected = []
@@ -30,6 +29,10 @@ mutationRate = 0.003  # 0.5 percent mutation
 generation = 1
 
 import string, random , os, time #Duh
+
+
+
+maxFitness = len(target)
 
 
 # FUNCTIONS
@@ -146,25 +149,32 @@ class Species:
 
 
 while(1):
-	os.system('clear')
-	print('GENERATION: %d\t Target: \'%s\'\n\tPopulation:%d\n\n\tTop 5'%(generation,target,population))
-	GiveBirth(population, species, nextGen)
-	evaluateFitness(species)
-	#selected = NaturalSelection(species)
-	Rank(species)
-	for i in range(5):
-		print('DNA : %s   Fitness: %d' %(species[i].DNA, species[i].fitness))
-	print('\n\tWorst 5')
-	for i in range(5):
-		print('DNA : %s   Fitness: %d' %(species[population - i - 1].DNA, species[population - i - 1].fitness))
-	recordFitness = species[0].fitness
-	printAverageFitness(species, generation)
-	if species[0].DNA == target:
-		print('\n\nFinally \'%s\' was born. Happy Bday, species :D\n\n\n\n' %species[0].DNA )
+	os.system('cls')
+	if target.isalpha():
+
+		print('GENERATION: %d\t Target: \'%s\'\n\tPopulation:%d\n\n\tTop 5'%(generation,target,population))
+		GiveBirth(population, species, nextGen)
+		evaluateFitness(species)
+		#selected = NaturalSelection(species)
+		Rank(species)
+		for i in range(5):
+			print('DNA : %s   Fitness: %d' %(species[i].DNA, species[i].fitness))
+		print('\n\tWorst 5')
+		for i in range(5):
+			print('DNA : %s   Fitness: %d' %(species[population - i - 1].DNA, species[population - i - 1].fitness))
+		recordFitness = species[0].fitness
+		printAverageFitness(species, generation)
+		if species[0].DNA == target:
+			print('\n\nFinally \'%s\' was born. Happy Bday, species :D\n\n\n\n' %species[0].DNA )
+			break
+		nextGen = CrossOver(species)
+		species = nextGen # kill all previous gen and start the evolution again with new gen
+		generation += 1
+	else:
+		print("Error: Entered Target Should be String")
 		break
-	nextGen = CrossOver(species)
-	species = nextGen # kill all previous gen and start the evolution again with new gen
-	generation += 1
+
+
 	
 	#time.sleep(0.05)
 
